@@ -1,89 +1,92 @@
-# digital-communication-system-simulation
-Simulation of a digital communication system in Python including modulation schemes, channel effects, and BER/SER performance evaluation.
+# 8‑PSK Digital Communication System Simulation
+
+This project implements an end‑to‑end simulation of a digital communication system using **8‑PSK modulation** in Python.  
+The simulation models the main stages of a wireless communication link including baseband processing, pulse shaping, carrier modulation, transmission through a Rayleigh fading channel, and receiver‑side signal recovery.
+
+The system performance is evaluated by computing the **Bit Error Rate (BER)** and visualizing the received constellation.
 
 ---
 
-```markdown
-# Digital Communication System Simulation
+## Overview
 
-This project simulates an end-to-end **digital communication system** in Python. It includes bit generation, symbol mapping, pulse shaping, carrier modulation, Rayleigh fading, noise corruption, demodulation, matched filtering, and performance evaluation using BER/SER.
+The goal of this project is to demonstrate how digital data is transmitted through a wireless channel and how channel effects such as **Rayleigh fading and noise** influence the received signal.
 
-## Features
+The simulation follows the typical architecture of a communication system:
 
-- Random bit generation
-- Bit stream splitting into I/Q/control components
-- Custom voltage-level symbol mapping
-- Oversampling and pulse shaping
-- Root Raised Cosine (RRC) filtering
-- I/Q carrier modulation
-- Rayleigh fading channel simulation
-- Noise addition
-- Receiver-side demodulation
-- Matched filtering
-- Constellation recovery
-- BER/SER estimation
+- Bit generation
+- Symbol mapping (8‑PSK)
+- Pulse shaping
+- Passband modulation
+- Wireless channel effects
+- Demodulation and detection
+- BER evaluation
 
-## Methods Used
+---
 
-- `numpy.random.randint`
-- Custom bit-to-voltage mapping
-- `rrcosfilter(...)` for pulse shaping
-- Carrier multiplication with sine and cosine signals
-- Rayleigh fading generation using a sum-of-sinusoids style model
-- `np.convolve` for filtering
-- `np.arctan2` for quadrant-based decision making
-- BER and SER calculation
+## System Model
 
-## Simulation Parameters
+### Transmitter
+The transmitter performs the following operations:
 
-Some of the main hard-coded simulation parameters include:
+1. Generate a random binary bit sequence.
+2. Group bits into **3‑bit symbols** for 8‑PSK modulation.
+3. Map each symbol to corresponding **I/Q voltage levels**.
+4. Oversample the signal to create discrete‑time samples.
+5. Apply a **Root Raised Cosine (RRC) filter** for pulse shaping.
+6. Modulate the baseband signals onto a carrier using **I/Q modulation**.
+7. Combine the I and Q branches to produce the transmitted passband signal.
 
-- Bits per symbol: `bps = 3`
-- Sample rate: `sample_rate = 100`
-- Samples per symbol: `sps = 8`
-- Number of bits: `N = 3000`
-- Pulse shaping length: `length = 100`
-- Roll-off factor: `beta = 0.8`
-- Carrier frequency: `Fc = 10e5`
+---
 
-Rayleigh fading settings:
+### Channel
 
-- Mobile speed: `v_mph = 60`
-- Center frequency: `center_freq = 15e6`
-- Sampling frequency: `Fs = 8049`
-- Number of sinusoids: `N = 100`
+The transmitted signal passes through a simulated wireless channel including:
 
-## Outputs
+- **Rayleigh fading** to model multipath propagation
+- **Doppler shift** based on mobile velocity
+- **Additive White Gaussian Noise (AWGN)**
 
-The script produces:
+Multiple fading paths are combined to form the received signal.
 
-- Bit-stream stem plots
-- Oversampled PAM-like signals
-- RRC filter impulse response
-- Filtered I/Q streams
+---
+
+### Receiver
+
+At the receiver, the signal processing steps include:
+
+1. Coherent **I/Q demodulation**
+2. **Matched filtering** using the same RRC filter
+3. Symbol sampling and timing alignment
+4. Phase‑based symbol detection for 8‑PSK
+5. Reconstruction of the transmitted bit sequence
+6. Calculation of **Bit Error Rate (BER)** and **Symbol Error Rate (SER)**
+
+---
+
+## Visualization
+
+The simulation generates several plots that illustrate signal behavior throughout the system, such as:
+
+- Transmitted baseband signals
+- Pulse shaping filter response
 - Carrier waveforms
-- Modulated transmitted signals
-- Rayleigh fading waveform
-- Demodulated received signals
-- Real and imaginary received traces
-- Constellation diagram
-- BER printed in the console
+- Received I/Q signals
+- **Constellation diagram of detected symbols**
 
-## Purpose
+These plots help visualize the impact of fading and noise on signal detection.
 
-This project is designed as an educational communication systems simulation to demonstrate:
+---
 
-- baseband to passband transmission,
-- channel impairments,
-- receiver processing,
-- and performance analysis in fading environments.
+## Technologies Used
 
-## Requirements
-
-- Python 3
+- Python
 - NumPy
 - Matplotlib
 
+---
+
 ## How to Run
+
+Install the required Python libraries and run the script:
 ```bash
 python project_dig_comm_(sof)_.py
